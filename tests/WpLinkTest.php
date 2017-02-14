@@ -47,6 +47,7 @@ final class WpLinkTest extends TestCase
             $this->assertEquals('', WpLink::target('foo/bar.html?q=narf'));
 
             // Absolute
+            $this->assertEquals('', WpLink::target('/'));
             $this->assertEquals('', WpLink::target('/example/com'));
             $this->assertEquals('', WpLink::target('/foo'));
             $this->assertEquals('', WpLink::target('/foo/bar.html'));
