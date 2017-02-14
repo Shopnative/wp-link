@@ -1,5 +1,7 @@
 WpLink
 ======
+Master: [![Build Status](https://travis-ci.com/onvardgmbh/wp-link.svg?token=CUVxqyDLPnf9Hqbcbzfs&branch=master)](https://travis-ci.com/onvardgmbh/wp-link)
+Develop: [![Build Status](https://travis-ci.com/onvardgmbh/wp-link.svg?token=CUVxqyDLPnf9Hqbcbzfs&branch=develop)](https://travis-ci.com/onvardgmbh/wp-link)
 
 Detect if a link is internal to enable easily setting `target="_blank"` for external links.
 
