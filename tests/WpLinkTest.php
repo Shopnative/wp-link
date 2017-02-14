@@ -15,6 +15,7 @@ final class WpLinkTest extends TestCase
         foreach ([
                 'http://example.com',
                 'https://example.com',
+                '//example.com',
                 'example.com',
         ] as $url) {
             $siteUrl = $url;
