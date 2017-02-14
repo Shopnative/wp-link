@@ -3,6 +3,13 @@
   "description": "WordPress link helper class",
   "license": "MIT",
   "homepage": "https://github.com/onvardgmbh/wp-link",
+  "require-dev": {
+    "phpunit/phpunit": "^6.0.6"
+  },
+  "scripts": {
+    "test": "phpunit",
+    "test:dox" : "phpunit --testdox tests"
+  },
   "autoload": {
     "psr-4": {
       "Onvardgmbh\\": "src/"

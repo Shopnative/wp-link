@@ -8,3 +8,6 @@ Require the library with composer and use it in your blades like this:
 ```blade
 <a href="{{ $uri }}" {!! \Onvardgmbh\WpLink::target($uri) !!}>Foo</a>
 ```
+
+## Run Tests
+To run the tests, run `composer run-script test` or `composer run-script test:dox` in the project root directory.
