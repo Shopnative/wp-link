@@ -1,0 +1,11 @@
+{
+  "name": "onvardgmbh/wp-link",
+  "description": "WordPress link helper class",
+  "license": "MIT",
+  "homepage": "https://github.com/onvardgmbh/wp-link",
+  "autoload": {
+    "psr-4": {
+      "Onvardgmbh\\": "src/"
+    }
+  }
+}
