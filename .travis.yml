@@ -1,0 +1,16 @@
+language: php
+sudo: false
+dist: trusty
+php:
+  - 7.0
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - vendor
+
+install:
+  - composer install -o --prefer-dist --no-interaction
+
+script:
+  - composer run-script test
