@@ -105,4 +105,25 @@ final class WpLinkTest extends TestCase
             $this->assertEquals('target="_blank"', WpLink::target('//subdomain.external.com/foo/bar.html?q=narf'));
         }
     }
+
+    public function testContentFilterSimple()
+    {
+        global $siteUrl;
+
+        foreach ([
+            'http://example.com',
+            'https://example.com',
+            '//example.com',
+            'example.com',
+        ] as $url) {
+            $siteUrl = $url;
+
+            $this->assertEquals('<a href="http://example.com">link</a>', WpLink::content('<a href="http://example.com">link</a>'));
+            $this->assertEquals('<a href="http://external.com" target="_blank">link</a>', WpLink::content('<a href="http://external.com">link</a>'));
+            $this->assertEquals('<div class="foo">Some text with a <a class="link" id="test" href="http://example.com/">link</a> and more text</div>',
+                WpLink::content('<div class="foo">Some text with a <a class="link" id="test" href="http://example.com/">link</a> and more text</div>'));
+            $this->assertEquals('<div class="foo">Some text with a <a class="link" id="test" href="http://external.com/" target="_blank">link</a> and more text</div>',
+                WpLink::content('<div class="foo">Some text with a <a class="link" id="test" href="http://external.com/">link</a> and more text</div>'));
+        }
+    }
 }
