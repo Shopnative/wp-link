@@ -52,7 +52,7 @@ class WpLink
             }
 
             foreach ($document->getElementsByTagName('a') as $a) {
-                if (static::external($a->getAttribute('href'))) {
+                if (static::external($a->getAttribute('href')) && $a->getAttribute('target') !== '_blank') {
                     $a->setAttribute('target', '_blank');
                 }
             }
