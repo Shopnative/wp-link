@@ -13,4 +13,5 @@ install:
   - composer install -o --prefer-dist --no-interaction
 
 script:
+  - if [[ $(find . \( -name '*.php' \) -not -path "./vendor/*" -exec php -lf {} \; | grep -v '^No syntax errors') ]] ; then exit 1 ; fi
   - composer run-script test
