@@ -37,20 +37,26 @@ class WpLink
      */
     public static function content($content)
     {
-        $document = new \DOMDocument();
-        $success = $document->loadHTML($content);
-        if (!$success) {
-            error_log('Failed to load HTML!');
+        try {
+            //$document = new \DOMDocument('1.0', 'UTF-8');
+            $document = new \DOMDocument();
+            $document->encoding = 'UTF-8';
+            $success = $document->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+            if (!$success) {
+                throw new \Exception('Failed to load HTML!');
+            }
+
+            foreach ($document->getElementsByTagName('a') as $a) {
+                if (static::external($a->getAttribute('href'))) {
+                    $a->setAttribute('target', '_blank');
+                }
+            }
+
+            $bodyInnerHTML = $document->saveHTML($document->documentElement->firstChild);
+            return substr($bodyInnerHTML, 6, strlen($bodyInnerHTML) - 13); // Cut off <body> and </body>
+        } catch (\Exception $e) {
+            // If there was an error, return the content unprocessed
             return $content;
         }
-
-        foreach ($document->getElementsByTagName('a') as $a) {
-            if (static::external($a->getAttribute('href'))) {
-                $a->setAttribute('target', '_blank');
-            }
-        }
-
-        $bodyInnerHTML = $document->saveHTML($document->documentElement->firstChild);
-        return substr($bodyInnerHTML, 6, strlen($bodyInnerHTML) - 13); // Cut off <body> and </body>
     }
 }

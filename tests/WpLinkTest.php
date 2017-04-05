@@ -133,6 +133,13 @@ final class WpLinkTest extends TestCase
                 str_replace(PHP_EOL, '', WpLink::content('<div class="foo">Some text <em>with <strong>a <a class="link" id="test" href="http://example.com/">link</a> and</strong> more</em> text</div>')));
             $this->assertEquals('<div class="foo">Some text <em>with <strong>a <a class="link" id="test" href="http://external.com/" target="_blank">link</a> and</strong> more</em> text</div>',
                 str_replace(PHP_EOL, '', WpLink::content('<div class="foo">Some text <em>with <strong>a <a class="link" id="test" href="http://external.com/">link</a> and</strong> more</em> text</div>')));
+
+            // Non-ASCII characters
+            $this->assertEquals('<p>Umläütß <a href="/">→ Lïnk</a>.</p>', WpLink::content('<p>Umläütß <a href="/">→ Lïnk</a>.</p>'));
+
+            // Invalid markup should be returned unproccessed
+            $invalid = 'foo<bar<narf--"xxx>test<foo';
+            $this->assertEquals($invalid, WpLink::content($invalid));
         }
     }
 }
