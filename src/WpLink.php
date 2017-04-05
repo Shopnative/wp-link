@@ -50,6 +50,7 @@ class WpLink
             }
         }
 
-        return $document->saveHTML($document->documentElement->firstChild->firstChild);
+        $bodyInnerHTML = $document->saveHTML($document->documentElement->firstChild);
+        return substr($bodyInnerHTML, 6, strlen($bodyInnerHTML) - 13); // Cut off <body> and </body>
     }
 }

@@ -106,7 +106,7 @@ final class WpLinkTest extends TestCase
         }
     }
 
-    public function testContentFilterSimple()
+    public function testContentFilter()
     {
         global $siteUrl;
 
@@ -118,12 +118,21 @@ final class WpLinkTest extends TestCase
         ] as $url) {
             $siteUrl = $url;
 
+            // Simple case
             $this->assertEquals('<a href="http://example.com">link</a>', WpLink::content('<a href="http://example.com">link</a>'));
             $this->assertEquals('<a href="http://external.com" target="_blank">link</a>', WpLink::content('<a href="http://external.com">link</a>'));
-            $this->assertEquals('<div class="foo">Some text with a <a class="link" id="test" href="http://example.com/">link</a> and more text</div>',
-                WpLink::content('<div class="foo">Some text with a <a class="link" id="test" href="http://example.com/">link</a> and more text</div>'));
-            $this->assertEquals('<div class="foo">Some text with a <a class="link" id="test" href="http://external.com/" target="_blank">link</a> and more text</div>',
-                WpLink::content('<div class="foo">Some text with a <a class="link" id="test" href="http://external.com/">link</a> and more text</div>'));
+
+            // Multiple top level elements
+            $this->assertEquals('<p>First <a href="http://example.com/">link</a>.</p><p>Second <a href="http://example.com/about">link</a>.</p>',
+                str_replace(PHP_EOL, '', WpLink::content('<p>First <a href="http://example.com/">link</a>.</p><p>Second <a href="http://example.com/about">link</a>.</p>')));
+            $this->assertEquals('<p>First <a href="http://external.com/" target="_blank">link</a>.</p><p>Second <a href="http://external.com/about" target="_blank">link</a>.</p>',
+                str_replace(PHP_EOL, '', WpLink::content('<p>First <a href="http://external.com/">link</a>.</p><p>Second <a href="http://external.com/about">link</a>.</p>')));
+
+            // Nested elements
+            $this->assertEquals('<div class="foo">Some text <em>with <strong>a <a class="link" id="test" href="http://example.com/">link</a> and</strong> more</em> text</div>',
+                str_replace(PHP_EOL, '', WpLink::content('<div class="foo">Some text <em>with <strong>a <a class="link" id="test" href="http://example.com/">link</a> and</strong> more</em> text</div>')));
+            $this->assertEquals('<div class="foo">Some text <em>with <strong>a <a class="link" id="test" href="http://external.com/" target="_blank">link</a> and</strong> more</em> text</div>',
+                str_replace(PHP_EOL, '', WpLink::content('<div class="foo">Some text <em>with <strong>a <a class="link" id="test" href="http://external.com/">link</a> and</strong> more</em> text</div>')));
         }
     }
 }
