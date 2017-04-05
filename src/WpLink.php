@@ -15,6 +15,7 @@ class WpLink
         // If the URI starts with a schema, make sure the domain is not the current site
         $isExternal = preg_match('/^(https?:)?\/\/(?!' . str_replace('/', '\\/', $siteUrl) . ')/', $uri);
         $isExternal = apply_filters('link_target', $isExternal, $uri);
+
         return $isExternal;
     }
 
@@ -37,6 +38,10 @@ class WpLink
      */
     public static function content($content)
     {
+        if (empty($content)) {
+            return $content;
+        }
+
         try {
             //$document = new \DOMDocument('1.0', 'UTF-8');
             $document = new \DOMDocument();
