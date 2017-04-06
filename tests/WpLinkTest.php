@@ -137,6 +137,10 @@ final class WpLinkTest extends TestCase
             // Non-ASCII characters
             $this->assertEquals('<p>Umläütß <a href="/">→ Lïnk</a>.</p>', WpLink::content('<p>Umläütß <a href="/">→ Lïnk</a>.</p>'));
 
+            // Prevent overwrite of explicit target
+            $this->assertEquals('<a href="http://example.com" target="_self">link</a>', WpLink::content('<a href="http://example.com" target="_self">link</a>'));
+            $this->assertEquals('<a href="http://external.com" target="_blank">link</a>', WpLink::content('<a href="http://external.com" target="_blank">link</a>'));
+
             // Invalid markup should be returned unproccessed
             $invalid = 'foo<bar<narf--"xxx>test<foo';
             $this->assertEquals($invalid, WpLink::content($invalid));
