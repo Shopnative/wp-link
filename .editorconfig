@@ -6,9 +6,9 @@ insert_final_newline = true
 charset = utf-8
 
 [*.{css,js,json,scss,yml}]
-indent_style = spaces
+indent_style = space
 indent_size = 2
 
 [*.php]
-indent_style = spaces
+indent_style = space
 indent_size = 4
