@@ -46,7 +46,9 @@ class WpLink
             //$document = new \DOMDocument('1.0', 'UTF-8');
             $document = new \DOMDocument();
             $document->encoding = 'UTF-8';
-            set_error_handler(function() {/* Ignore warnings */});
+            set_error_handler(function ($errno, $errstr, $errfile, $errline, array $errcontext) {
+                throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+            });
             $success = $document->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
             restore_error_handler();
             if (!$success) {
