@@ -27,7 +27,7 @@ class WpLink
      */
     public static function target(string $uri)
     {
-        return static::external($uri) ? 'target="_blank"' : '';
+        return static::external($uri) ? 'target="_blank" rel="noopener"' : '';
     }
 
     /**
