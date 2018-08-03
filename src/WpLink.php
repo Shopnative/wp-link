@@ -27,7 +27,7 @@ class WpLink
      */
     public static function target(string $uri)
     {
-        return static::external($uri) ? 'target="_blank"' : '';
+        return static::external($uri) ? 'target="_blank" rel="noopener"' : '';
     }
 
     /**
@@ -58,6 +58,7 @@ class WpLink
             foreach ($document->getElementsByTagName('a') as $a) {
                 if (static::external($a->getAttribute('href')) && !$a->hasAttribute('target')) {
                     $a->setAttribute('target', '_blank');
+                    $a->setAttribute('rel', 'noopener');
                 }
             }
 
