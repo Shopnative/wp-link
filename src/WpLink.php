@@ -16,7 +16,7 @@ class WpLink
         $isExternal = preg_match('/^(https?:)?\/\/(?!' . str_replace('/', '\\/', $siteUrl) . ')/', $uri);
         $isExternal = apply_filters('link_target', $isExternal, $uri);
 
-        return $isExternal;
+        return (bool) $isExternal;
     }
 
     /**
