@@ -16,7 +16,7 @@ class WpLink
         $isExternal = preg_match('/^(https?:)?\/\/(?!' . str_replace('/', '\\/', $siteUrl) . ')/', $uri);
         $isExternal = apply_filters('link_target', $isExternal, $uri);
 
-        return $isExternal;
+        return (bool) $isExternal;
     }
 
     /**
@@ -27,7 +27,7 @@ class WpLink
      */
     public static function target(string $uri)
     {
-        return static::external($uri) ? 'target="_blank"' : '';
+        return static::external($uri) ? 'target="_blank" rel="noopener"' : '';
     }
 
     /**
@@ -58,6 +58,7 @@ class WpLink
             foreach ($document->getElementsByTagName('a') as $a) {
                 if (static::external($a->getAttribute('href')) && !$a->hasAttribute('target')) {
                     $a->setAttribute('target', '_blank');
+                    $a->setAttribute('rel', 'noopener');
                 }
             }
 
