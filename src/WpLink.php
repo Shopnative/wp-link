@@ -9,7 +9,7 @@ class WpLink
      * @param  string  $uri
      * @return bool
      */
-    public static function external(string $uri)
+    public static function isExternal(string $uri): bool
     {
         $siteUrl = preg_replace('/^(https?:)?\/\//', '', site_url());
         // If the URI starts with a schema, make sure the domain is not the current site
@@ -20,14 +20,26 @@ class WpLink
     }
 
     /**
+     * @deprecated Was renamed to isExternal
+     */
+    public static function external(string $uri): bool
+    {
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            trigger_error('WpLink::external() was renamed to WpLink::isExternal.', E_USER_DEPRECATED);
+        }
+
+        return static::isExternal($uri);
+    }
+
+    /**
      * Return the target attribute for a link to the given URI.
      *
      * @param  string  $uri
      * @return string
      */
-    public static function target(string $uri)
+    public static function target(string $uri): string
     {
-        return static::external($uri) ? 'target="_blank" rel="noopener"' : '';
+        return static::isExternal($uri) ? 'target="_blank" rel="noopener"' : '';
     }
 
     /**
@@ -36,7 +48,7 @@ class WpLink
      * @param  string $content
      * @return string
      */
-    public static function content($content)
+    public static function content($content): string
     {
         if (empty($content)) {
             return $content;
@@ -56,7 +68,7 @@ class WpLink
             }
 
             foreach ($document->getElementsByTagName('a') as $a) {
-                if (static::external($a->getAttribute('href')) && !$a->hasAttribute('target')) {
+                if (static::isExternal($a->getAttribute('href')) && !$a->hasAttribute('target')) {
                     $a->setAttribute('target', '_blank');
                     $a->setAttribute('rel', 'noopener');
                 }
