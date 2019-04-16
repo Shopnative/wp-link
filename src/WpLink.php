@@ -14,7 +14,7 @@ class WpLink
         $siteUrl = preg_replace('/^(https?:)?\/\//', '', site_url());
         // If the URI starts with a schema, make sure the domain is not the current site
         $isExternal = preg_match('/^(https?:)?\/\/(?!' . str_replace('/', '\\/', $siteUrl) . ')/', $uri);
-        $isExternal = apply_filters('link_target', $isExternal, $uri);
+        $isExternal = apply_filters('link_is_external', $isExternal, $uri);
 
         return (bool) $isExternal;
     }
@@ -31,6 +31,15 @@ class WpLink
         return static::isExternal($uri);
     }
 
+    public static function isFile(string $uri): bool
+    {
+        $fileExtensions = apply_filters('link_file_extensions', ['pdf', 'zip']);
+        // Check if the URI path ends with one of the file extensions, optionally followed by query parameters or a fragment id
+        $isFile = preg_match('/^(https?:)?\/\/[^#\/?]+\/[^#?]+\.('.implode('|', $fileExtensions).')([#?].*)?$/u', $uri);
+
+        return apply_filters('link_is_file', $isFile, $uri);
+    }
+
     /**
      * Return the target attribute for a link to the given URI.
      *
@@ -39,7 +48,9 @@ class WpLink
      */
     public static function target(string $uri): string
     {
-        return static::isExternal($uri) ? 'target="_blank" rel="noopener"' : '';
+        $openInNewTab = static::isExternal($uri) || static::isFile($uri);
+
+        return apply_filters('link_target', $openInNewTab, $uri) ? 'target="_blank" rel="noopener"' : '';
     }
 
     /**
