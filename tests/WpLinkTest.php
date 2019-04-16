@@ -9,6 +9,31 @@ use PHPUnit\Framework\TestCase;
  */
 final class WpLinkTest extends TestCase
 {
+    public function testNotFile()
+    {
+        $this->assertEquals(false, WpLink::isFile('https://example.com'));
+        $this->assertEquals(false, WpLink::isFile('https://example.com/'));
+        $this->assertEquals(false, WpLink::isFile('https://example.com/foo'));
+        $this->assertEquals(false, WpLink::isFile('https://example.com/foo?test'));
+        $this->assertEquals(false, WpLink::isFile('https://example.com/foo?test=value'));
+        $this->assertEquals(false, WpLink::isFile('https://example.com/foo#fragment'));
+        $this->assertEquals(false, WpLink::isFile('https://example.com/foo?test=value#fragment'));
+    }
+
+    public function testFile()
+    {
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.pdf'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.pdf?test'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.pdf?test=value'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.pdf#fragment'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.pdf?test=value#fragment'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.zip'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.zip?test'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.zip?test=value'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.zip#fragment'));
+        $this->assertEquals(true, WpLink::isFile('https://example.com/foo.zip?test=value#fragment'));
+    }
+
     public function testTargetInternal()
     {
         global $siteUrl;
